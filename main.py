@@ -8,7 +8,7 @@ import sys
 
 if __name__=="__main__":
   try:
-    trainingpipelineconfig=TrainingPipelineConfig
+    trainingpipelineconfig=TrainingPipelineConfig()
     dataingestionconfig=DataIngestionConfig(trainingpipelineconfig)
     data_ingestion=DataIngestion(dataingestionconfig)
     logging.info("Initiate the data ingestion")
@@ -16,4 +16,4 @@ if __name__=="__main__":
     print(dataingestionartifact)
 
   except Exception as e:
-    raise NetworkSecurityException
+    raise NetworkSecurityException(e,sys)

@@ -13,7 +13,7 @@ PIPELINE_NAME:str="NetworkSecurity"
 ARTIFACT_DIR:str="Artifacts"
 FILE_NAME:str="phisingData.csv"
 
-TRAIN_TEST_SPLIT:str="train.csv"
+TRAIN_FILE_NAME:str="train.csv"
 TEST_FILE_NAME:str="test.csv"
 
 """
