@@ -1,0 +1,1 @@
+from networksecurity.entity.config_entity import DataIngestionConfig
