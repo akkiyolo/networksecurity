@@ -4,6 +4,7 @@ from networksecurity.exception.exception import NetworkSecurityException
 from networksecurity.logging.logger import logging
 from networksecurity.constant.training_pipeline import SCHEMA_FILE_PATH
 from scipy.stats import ks_2samp
+from networksecurity.utils.main_utils.utils import read_yaml_file
 import pandas as pd
 import os,sys
 import yaml
