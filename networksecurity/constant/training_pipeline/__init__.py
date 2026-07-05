@@ -38,3 +38,17 @@ DATA_VALIDATION_VALID_DIR:str="validated"
 DATA_VALIDATION_INVALID_DIR:str="invalid"
 DATA_VALIDATION_DRIFT_REPORT_DIR:str="drift_report"
 DATA_VALIDATION_DRIFT_REPORT_FILE_NAME:str="report.yaml"
+
+"""
+DATA TRANSFORMATION CONSTANTS.These control HOW data is cleaned and WHERE transformed data is saved
+"""
+DATA_TRANSFORMATION_DIR_NAME: str = "data_transformation"
+DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR: str = "transformed"
+DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR: str = "transformed_object"
+
+## knn imputer class to re place nan values
+DATA_TRANSFORMATION_IMPUTER_PARAMS:dict={
+  "missing_values":np.nan,
+  "n_neighbours":3,
+  "weights":"uniform",
+}
