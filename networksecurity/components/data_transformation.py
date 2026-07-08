@@ -130,7 +130,6 @@ class DataTransformation:
                 preprocessor_object,
             )
 
-            logging.info("Data Transformation completed successfully.")
 
             ## preparing artifacts
 
