@@ -59,7 +59,6 @@ class DataTransformationConfig:
 
 class ModelTrainerConfig:
     def __init__(self, training_pipeline_config: TrainingPipelineConfig):
-        # Root folder: "Artifacts/<timestamp>/model_trainer"
         self.model_trainer_dir: str = os.path.join(
             training_pipeline_config.artifact_dir, training_pipeline.MODEL_TRAINER_DIR_NAME
         )
@@ -67,9 +66,5 @@ class ModelTrainerConfig:
             self.model_trainer_dir, training_pipeline.MODEL_TRAINER_TRAINED_MODEL_DIR, 
             training_pipeline.MODEL_FILE_NAME
         )
-        
-        # Minimum acceptable accuracy (0.6 = 60%)
-        # If the best model scores below this, it's considered not good enough
         self.expected_accuracy: float = training_pipeline.MODEL_TRAINER_EXPECTED_SCORE
-
-        self.overfitting_underfitting_threshold = training_pipeline.MODEL_TRAINER_OVER_FIITING_UNDER_FITTING_THRESHOLD
+        self.overfitting_underfitting_threshold = training_pipeline.MODEL_TRAINER_OVER_FITTING_UNDER_FITTING_THRESHOLD
