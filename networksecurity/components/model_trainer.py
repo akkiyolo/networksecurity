@@ -3,8 +3,10 @@ import sys
 
 from networksecurity.exception.exception import NetworkSecurityException
 from networksecurity.logging.logger import logging
-
-from networksecurity.entity.artifact_entity import DataTransformationArtifact,ModelTrainerArtifact
+from networksecurity.entity.artifact_entity import (
+    DataTransformationArtifact,
+    ModelTrainerArtifact
+)
 from networksecurity.entity.config_entity import ModelTrainerConfig
 
 from networksecurity.utils.ml_utils.model.estimator import NetworkModel
@@ -27,7 +29,7 @@ class ModelTrainer:
   def __init__(self,model_trainer_config:ModelTrainerConfig,data_transformation_artifact:DataTransformationArtifact):
     try:
       self.model_trainer_config=model_trainer_config
-      self.data_transformation_arttifact=data_transformation_artifact
+      self.data_transformation_artifact=data_transformation_artifact
     except Exception as e:
       raise NetworkSecurityException(e,sys) 
     
@@ -113,8 +115,8 @@ class ModelTrainer:
     
   def initiate_model_trainer(self)->ModelTrainerArtifact:
     try:
-      train_file_path=self.data_transformation_arttifact.transformed_train_file_path
-      test_file_path=self.data_transformation_arttifact.transformed_test_file_path
+      train_file_path=self.data_transformation_artifact.transformed_train_file_path
+      test_file_path=self.data_transformation_artifact.transformed_test_file_path
 
       #loading training array and testing array
 
