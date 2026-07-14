@@ -120,21 +120,19 @@ class ModelTrainer:
 
         preprocessor = load_object(file_path=self.data_transformation_artifact.transformed_object_file_path)
             
-        # Create the directory for saving the trained model
+   
         model_dir_path = os.path.dirname(self.model_trainer_config.trained_model_file_path)
         os.makedirs(model_dir_path, exist_ok=True)
 
         Network_Model = NetworkModel(preprocessor=preprocessor, model=best_model)
         
-        # Save the NetworkModel class reference to the artifacts directory
+
         save_object(self.model_trainer_config.trained_model_file_path, obj=NetworkModel)
         
-        # Save JUST the best model (without preprocessor) to final_model/ for production use
-        # This is what app.py loads when making predictions
+
         save_object("final_model/model.pkl", best_model)
         
 
-        ## Create the Model Trainer Artifact — records what this step produced
         model_trainer_artifact = ModelTrainerArtifact(
             trained_model_file_path=self.model_trainer_config.trained_model_file_path,
                              train_metric_artifact=classification_train_metric,  # Training performance
@@ -146,7 +144,7 @@ class ModelTrainer:
         
     def initiate_model_trainer(self) -> ModelTrainerArtifact:
         try:
-            # Get the file paths for transformed data from the previous step's artifact
+
             train_file_path = self.data_transformation_artifact.transformed_train_file_path
             test_file_path = self.data_transformation_artifact.transformed_test_file_path
 
@@ -161,7 +159,7 @@ class ModelTrainer:
                 test_arr[:, -1],    # Testing target
             )
 
-            # Train all models and get the artifact for the best one
+
             model_trainer_artifact = self.train_model(x_train, y_train, x_test, y_test)
             return model_trainer_artifact
 

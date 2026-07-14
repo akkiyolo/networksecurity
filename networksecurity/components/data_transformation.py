@@ -130,6 +130,8 @@ class DataTransformation:
                 preprocessor_object,
             )
 
+            save_object("final_model/preprocessor.pkl",preprocessor_object)
+
 
             ## preparing artifacts
 
