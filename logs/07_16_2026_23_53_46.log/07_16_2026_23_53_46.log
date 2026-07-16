@@ -1,0 +1,39 @@
+[ 2026-07-16 23:53:53,538 ] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/user "HTTP/1.1 200 OK"
+[ 2026-07-16 23:53:53,555 ] 107 dagshub - INFO - Accessing as akkiyolo
+[ 2026-07-16 23:53:54,653 ] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/repos/akkiyolo/networksecurity "HTTP/1.1 200 OK"
+[ 2026-07-16 23:53:55,663 ] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/user "HTTP/1.1 200 OK"
+[ 2026-07-16 23:53:55,667 ] 107 dagshub - INFO - Initialized MLflow to track repo "akkiyolo/networksecurity"
+[ 2026-07-16 23:53:55,670 ] 107 dagshub - INFO - Repository akkiyolo/networksecurity initialized!
+[ 2026-07-16 23:55:37,328 ] 142 root - INFO - ========== Training Pipeline Started ==========
+[ 2026-07-16 23:55:37,334 ] 38 root - INFO - Starting Data Ingestion
+[ 2026-07-16 23:55:46,460 ] 65 root - INFO - Performed train test split on the dataframe
+[ 2026-07-16 23:55:46,460 ] 67 root - INFO - Exited split_data_as_train_test method of Data_Ingestion class
+[ 2026-07-16 23:55:46,460 ] 75 root - INFO - Exporting train and test file path.
+[ 2026-07-16 23:55:46,511 ] 84 root - INFO - Exported train and test file path.
+[ 2026-07-16 23:55:46,512 ] 46 root - INFO - Data Ingestion completed successfully.
+Artifact: DataIngestionArtifact(trained_file_path='Artifacts\\07_16_2026_23_53_47\\data_ingestion\\ingested\\train.csv', test_file_path='Artifacts\\07_16_2026_23_53_47\\data_ingestion\\ingested\\test.csv')
+[ 2026-07-16 23:55:46,513 ] 64 root - INFO - Starting Data Validation
+[ 2026-07-16 23:55:46,563 ] 32 root - INFO - Required number of columns:2
+[ 2026-07-16 23:55:46,563 ] 33 root - INFO - Data frame has columns:31
+[ 2026-07-16 23:55:46,563 ] 32 root - INFO - Required number of columns:2
+[ 2026-07-16 23:55:46,563 ] 33 root - INFO - Data frame has columns:31
+[ 2026-07-16 23:55:46,801 ] 75 root - INFO - Data Validation completed successfully.
+Artifact: DataValidationArtifact(validation_status=None, valid_train_file_path='Artifacts\\07_16_2026_23_53_47\\data_ingestion\\ingested\\train.csv', valid_test_file_path='Artifacts\\07_16_2026_23_53_47\\data_ingestion\\ingested\\test.csv', invalid_train_file_path=None, invalid_test_file_path=None, drift_report_file_path='Artifacts\\07_16_2026_23_53_47\\data_validation\\drift_report\\report.yaml')
+[ 2026-07-16 23:55:46,801 ] 93 root - INFO - Starting Data Transformation
+[ 2026-07-16 23:55:46,803 ] 70 root - INFO - Starting Data Transformation
+[ 2026-07-16 23:55:46,860 ] 53 root - INFO - Initializing KNN Imputer
+[ 2026-07-16 23:55:46,898 ] 44 root - INFO - Entered the save_object method of MainUtils class
+[ 2026-07-16 23:55:46,901 ] 50 root - INFO - Exited the save_object method of MainUtils class
+[ 2026-07-16 23:55:46,901 ] 44 root - INFO - Entered the save_object method of MainUtils class
+[ 2026-07-16 23:55:46,903 ] 50 root - INFO - Exited the save_object method of MainUtils class
+[ 2026-07-16 23:55:46,906 ] 104 root - INFO - Data Transformation completed successfully.
+Artifact: DataTransformationArtifact(transformed_object_file_path='Artifacts\\07_16_2026_23_53_47\\data_transformation\\transformed_object\\preprocessing.pkl', transformed_train_file_path='Artifacts\\07_16_2026_23_53_47\\data_transformation\\transformed\\train.npy', transformed_test_file_path='Artifacts\\07_16_2026_23_53_47\\data_transformation\\transformed\\test.npy')
+[ 2026-07-16 23:55:46,906 ] 122 root - INFO - Starting Model Training
+[ 2026-07-17 00:01:04,366 ] 44 root - INFO - Entered the save_object method of MainUtils class
+[ 2026-07-17 00:01:04,376 ] 50 root - INFO - Exited the save_object method of MainUtils class
+[ 2026-07-17 00:01:04,376 ] 44 root - INFO - Entered the save_object method of MainUtils class
+[ 2026-07-17 00:01:04,596 ] 50 root - INFO - Exited the save_object method of MainUtils class
+[ 2026-07-17 00:01:04,599 ] 141 root - INFO - Model trainer artifact: ModelTrainerArtifact(trained_model_file_path='Artifacts\\07_16_2026_23_53_47\\model_trainer\\trained_model\\model.pkl', train_metric_artifact=ClassificationMetricArtifact(f1_score=0.991045991045991, precision_score=0.9882305194805194, recall_score=0.9938775510204082), test_metric_artifact=ClassificationMetricArtifact(f1_score=0.974703557312253, precision_score=0.9685781618224666, recall_score=0.9809069212410502))
+[ 2026-07-17 00:01:04,648 ] 131 root - INFO - Model Training completed successfully.
+Artifact: ModelTrainerArtifact(trained_model_file_path='Artifacts\\07_16_2026_23_53_47\\model_trainer\\trained_model\\model.pkl', train_metric_artifact=ClassificationMetricArtifact(f1_score=0.991045991045991, precision_score=0.9882305194805194, recall_score=0.9938775510204082), test_metric_artifact=ClassificationMetricArtifact(f1_score=0.974703557312253, precision_score=0.9685781618224666, recall_score=0.9809069212410502))
+[ 2026-07-17 00:01:04,648 ] 162 root - INFO - ========== Training Pipeline Completed ==========
