@@ -33,7 +33,7 @@ from networksecurity.entity.artifact_entity import (
 class TrainingPipeline:
     def __init__(self):
         self.training_pipeline_config = TrainingPipelineConfig()
-
+        self.s3_sync=S3Sync()
     def start_data_ingestion(self) -> DataIngestionArtifact:
         try:
             self.data_ingestion_config = DataIngestionConfig(
