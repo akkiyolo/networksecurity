@@ -1,1 +1,2 @@
-### Network Security project for phishing data 
+### Network Security — Phishing Detection MLOps Pipeline
+
