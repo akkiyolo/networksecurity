@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 from networksecurity.constant import training_pipeline
-
+from networksecurity.cloud.s3_syncer import S3Sync
 print(training_pipeline.PIPELINE_NAME)
 print(training_pipeline.ARTIFACT_DIR)
 
@@ -14,6 +14,7 @@ class TrainingPipelineConfig:
         self.artifact_dir=os.path.join(self.artifact_name,timestamp)
         self.model_dir=os.path.join("final_model")
         self.timestamp: str=timestamp
+        self.s3_sync = S3Sync()
 
 class DataIngestionConfig:
     def __init__(self,training_pipeline_config:TrainingPipelineConfig):
