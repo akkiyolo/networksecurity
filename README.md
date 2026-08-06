@@ -213,7 +213,7 @@ The response renders an HTML table with the original features plus a `predicted_
 
 All training runs are logged to **DagsHub's hosted MLflow** instance:
 
-- **Tracking URI:** `https://dagshub.com/krishnaik06/networksecurity.mlflow`
+- **Tracking URI:** `https://dagshub.com/akkiyolo/networksecurity.mlflow/`
 - **Metrics logged:** F1 Score, Precision, Recall (for both train and test sets)
 - **Artifacts logged:** Trained model objects
 
