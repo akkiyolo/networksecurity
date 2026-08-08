@@ -1,12 +1,5 @@
 # NetworkSecurity — Phishing Detection MLOps Pipeline
 
-[![Python](https://img.shields.io/badge/Python-3.10-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-API-009688.svg)](https://fastapi.tiangolo.com/)
-[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED.svg)](https://www.docker.com/)
-[![AWS](https://img.shields.io/badge/AWS-ECR%20%7C%20EC2%20%7C%20S3-FF9900.svg)](https://aws.amazon.com/)
-[![MLflow](https://img.shields.io/badge/MLflow-Experiment%20Tracking-0194E2.svg)](https://mlflow.org/)
-[![License](https://img.shields.io/badge/License-Educational-lightgrey.svg)](#license)
-
 An end-to-end MLOps pipeline for detecting phishing websites using machine learning. The project automates the full lifecycle — from data ingestion (MongoDB) through validation, transformation, model training with experiment tracking (MLflow / DagsHub), and serving predictions via a FastAPI REST API — containerized with Docker and deployed to AWS through a fully automated GitHub Actions CI/CD pipeline.
 
 ## Architecture
@@ -316,5 +309,9 @@ The dataset contains 30 features extracted from URLs to determine whether a webs
 Contributions, issues, and feature requests are welcome. Feel free to open a pull request or an issue if you'd like to improve this project.
 
 ## License
-
-This project is for educational purposes.
+ 
+Licensed under the [Apache License 2.0](LICENSE).
+ 
+## Author
+ 
+Built by [Akki](https://github.com/akkiyolo).
