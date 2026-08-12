@@ -5,7 +5,7 @@ services:
     plan: free
     dockerfilePath: ./Dockerfile
     envVars:
-      - key: MONGODB_URL_KEY
+      - key: MONGO_DB_KEY
         sync: false
       - key: MLFLOW_TRACKING_URI
         sync: false
