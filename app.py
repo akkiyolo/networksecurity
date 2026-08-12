@@ -20,6 +20,10 @@ from fastapi.responses import Response
 from starlette.responses import RedirectResponse
 import pandas as pd
 
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi import Request
+
 from networksecurity.utils.main_utils.utils import load_object
 
 from networksecurity.utils.ml_utils.model.estimator import NetworkModel
@@ -34,6 +38,12 @@ database = client[DATA_INGESTION_DATABASE_NAME]
 collection = database[DATA_INGESTION_COLLECTION_NAME]
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+templates = Jinja2Templates(directory="templates")
+
+
 origins = ["*"]
 
 app.add_middleware(
@@ -50,6 +60,16 @@ templates = Jinja2Templates(directory="./templates")
 @app.get("/", tags=["authentication"])
 async def index():
     return RedirectResponse(url="/docs")
+
+
+@app.get("/")
+async def home(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+# --- simple health check for Render + the frontend's status dot ---
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
 
 @app.get("/train")
 async def train_route():

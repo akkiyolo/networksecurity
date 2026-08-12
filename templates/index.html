@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetSec // Phishing Detection Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="scanlines" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="topbar__brand">
+    <span class="brand__bracket">[</span>NETSEC<span class="brand__bracket">]</span>
+  </div>
+  <div class="topbar__status" id="apiStatus">
+    <span class="dot dot--pending"></span>
+    <span class="status__label">checking engine…</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <p class="hero__eyebrow">Machine-Learning Threat Screening</p>
+    <h1 class="hero__title">
+      <span class="type" id="typeTarget"></span><span class="cursor">▌</span>
+    </h1>
+    <p class="hero__sub">
+      Upload a batch of URL feature records. The model — trained across five classifiers and
+      scored with GridSearchCV — flags each row <span class="tag tag--good">LEGITIMATE</span>
+      or <span class="tag tag--bad">PHISHING</span> in seconds.
+    </p>
+  </section>
+
+  <section class="grid">
+
+    <!-- Scan panel -->
+    <div class="panel panel--scan">
+      <div class="panel__head">
+        <span class="panel__index">01</span>
+        <h2>Scan a batch</h2>
+      </div>
+
+      <form id="predictForm">
+        <label class="dropzone" id="dropzone" for="fileInput">
+          <div class="dropzone__corner dropzone__corner--tl"></div>
+          <div class="dropzone__corner dropzone__corner--tr"></div>
+          <div class="dropzone__corner dropzone__corner--bl"></div>
+          <div class="dropzone__corner dropzone__corner--br"></div>
+          <svg class="dropzone__icon" width="40" height="40" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3v12m0-12 4 4m-4-4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="dropzone__label" id="dropLabel">drop .csv here or click to browse</span>
+          <input type="file" id="fileInput" name="file" accept=".csv" hidden>
+        </label>
+
+        <button type="submit" class="btn btn--primary" id="scanBtn" disabled>
+          <span>run scan</span>
+        </button>
+      </form>
+
+      <div class="log" id="scanLog" aria-live="polite"></div>
+    </div>
+
+    <!-- Train panel -->
+    <div class="panel panel--train">
+      <div class="panel__head">
+        <span class="panel__index">02</span>
+        <h2>Retrain model</h2>
+      </div>
+      <p class="panel__desc">
+        Re-runs ingestion → validation → transformation → training against the current
+        MongoDB dataset, and logs the run to MLflow.
+      </p>
+      <button class="btn btn--ghost" id="trainBtn">
+        <span>trigger training</span>
+      </button>
+      <div class="log" id="trainLog" aria-live="polite"></div>
+    </div>
+
+  </section>
+
+  <section class="panel panel--results" id="resultsPanel" hidden>
+    <div class="panel__head">
+      <span class="panel__index">03</span>
+      <h2>Results</h2>
+      <div class="results__summary" id="resultsSummary"></div>
+    </div>
+    <div class="table-wrap">
+      <table id="resultsTable">
+        <thead><tr id="resultsHead"></tr></thead>
+        <tbody id="resultsBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="foot__stack">
+      <span>python</span><span>·</span><span>fastapi</span><span>·</span>
+      <span>scikit-learn</span><span>·</span><span>mongodb</span><span>·</span>
+      <span>mlflow</span><span>·</span><span>docker</span>
+    </div>
+  </footer>
+
+</main>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>
