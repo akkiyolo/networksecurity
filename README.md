@@ -1,17 +1,8 @@
-# 🛡️ NetworkSecurity — Phishing Detection MLOps Pipeline
+# NetworkSecurity — Phishing Detection MLOps Pipeline
 
-[![Python](https://img.shields.io/badge/Python-3.10-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-API-009688.svg)](https://fastapi.tiangolo.com/)
-[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED.svg)](https://www.docker.com/)
-[![AWS](https://img.shields.io/badge/AWS-ECR%20%7C%20EC2%20%7C%20S3-FF9900.svg)](https://aws.amazon.com/)
-[![MLflow](https://img.shields.io/badge/MLflow-Experiment%20Tracking-0194E2.svg)](https://mlflow.org/)
-[![License](https://img.shields.io/badge/License-Educational-lightgrey.svg)](#license)
+An end-to-end MLOps pipeline for detecting phishing websites using machine learning. The project automates the full lifecycle — from data ingestion (MongoDB) through validation, transformation, model training with experiment tracking (MLflow / DagsHub), and serving predictions via a FastAPI REST API — containerized with Docker and deployed to AWS through a fully automated GitHub Actions CI/CD pipeline.
 
-An end-to-end **MLOps pipeline** for detecting phishing websites using machine learning. The project automates the full lifecycle — from data ingestion (MongoDB) through validation, transformation, model training with experiment tracking (MLflow / DagsHub), and serving predictions via a **FastAPI** REST API — containerized with Docker and deployed to AWS through a fully automated GitHub Actions CI/CD pipeline.
-
----
-
-## 📐 Architecture
+## Architecture
 
 ```
 ┌─────────────┐     ┌──────────────┐     ┌──────────────────┐     ┌──────────────────┐     ┌─────────────┐
@@ -26,15 +17,13 @@ An end-to-end **MLOps pipeline** for detecting phishing websites using machine l
                     └──────────────┘     └──────────────────┘     └──────────────────┘     └─────────────┘
 ```
 
-**CI/CD flow (GitHub Actions → AWS):**
+**CI/CD flow (GitHub Actions to AWS):**
 
 ```
-Push to main ──▶ CI (lint + test) ──▶ CD (build & push image to ECR) ──▶ Deploy (pull & run on self-hosted EC2 runner)
+Push to main -> CI (lint + test) -> CD (build & push image to ECR) -> Deploy (pull & run on self-hosted EC2 runner)
 ```
 
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 networksecurity/
@@ -69,16 +58,14 @@ networksecurity/
 └── setup.py                        # Package metadata & install config
 ```
 
----
-
-## 🔄 ML Pipeline Stages
+## ML Pipeline Stages
 
 | # | Stage | What It Does |
 |---|-------|---------------|
-| 1 | **Data Ingestion** | Exports data from MongoDB → CSV, then splits into train (80%) / test (20%) sets. |
-| 2 | **Data Validation** | Validates schema against `schema.yaml`, checks column count & data types, generates a **data-drift report** (Chi-squared test). |
-| 3 | **Data Transformation** | Applies **KNN Imputer** (k=3, uniform weights) to handle missing values, saves transformed numpy arrays (`.npy`). |
-| 4 | **Model Training** | Trains 5 classifiers with **GridSearchCV** hyperparameter tuning, selects the best model, logs metrics to **MLflow**, and saves the model as `.pkl`. |
+| 1 | Data Ingestion | Exports data from MongoDB to CSV, then splits into train (80%) / test (20%) sets. |
+| 2 | Data Validation | Validates schema against `schema.yaml`, checks column count and data types, generates a data-drift report (Chi-squared test). |
+| 3 | Data Transformation | Applies a KNN Imputer (k=3, uniform weights) to handle missing values, saves transformed numpy arrays (`.npy`). |
+| 4 | Model Training | Trains 5 classifiers with GridSearchCV hyperparameter tuning, selects the best model, logs metrics to MLflow, and saves the model as `.pkl`. |
 
 ### Models Evaluated
 
@@ -90,9 +77,7 @@ networksecurity/
 | Logistic Regression | Defaults |
 | AdaBoost | `learning_rate`, `n_estimators` |
 
----
-
-## 🧰 Tech Stack
+## Tech Stack
 
 | Category | Technology |
 |----------|-------------|
@@ -105,9 +90,7 @@ networksecurity/
 | Cloud | AWS (ECR, EC2, S3) |
 | CI/CD | GitHub Actions |
 
----
-
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -155,9 +138,7 @@ python push_data.py
 
 This reads `Network_Data/phisingData.csv`, converts it to JSON, and inserts the records into the `KRISHAI.NetworkData` MongoDB collection.
 
----
-
-## 🏋️ Running the Training Pipeline
+## Running the Training Pipeline
 
 ### Option 1 — Standalone Script
 
@@ -179,9 +160,7 @@ Then trigger training by visiting:
 GET http://localhost:8000/train
 ```
 
----
-
-## 🔮 Serving Predictions (FastAPI)
+## Serving Predictions
 
 ```bash
 python app.py
@@ -207,21 +186,17 @@ curl -X POST "http://localhost:8000/predict" \
 
 The response renders an HTML table with the original features plus a `predicted_column` (1 = legitimate, -1 = phishing). Results are also saved to `prediction_output/output.csv`.
 
----
+## Experiment Tracking with MLflow
 
-## 📊 Experiment Tracking with MLflow
+All training runs are logged to DagsHub's hosted MLflow instance:
 
-All training runs are logged to **DagsHub's hosted MLflow** instance:
-
-- **Tracking URI:** `https://dagshub.com/krishnaik06/networksecurity.mlflow`
+- **Tracking URI:** `https://dagshub.com/akkiyolo/networksecurity.mlflow/`
 - **Metrics logged:** F1 Score, Precision, Recall (for both train and test sets)
 - **Artifacts logged:** Trained model objects
 
 View experiment history, compare runs, and manage model versions through the DagsHub MLflow UI.
 
----
-
-## 🐳 Docker
+## Docker
 
 ### Build the Image
 
@@ -237,15 +212,13 @@ docker run -d -p 8000:8000 \
   networksecurity
 ```
 
----
-
-## ⚙️ CI/CD — GitHub Actions
+## CI/CD — GitHub Actions
 
 The pipeline (`.github/workflows/main.yml`) runs on every push to `main` (excluding `README.md` changes) and consists of three stages:
 
-1. **Continuous Integration** — Linting & unit tests
-2. **Continuous Delivery** — Builds the Docker image and pushes it to **AWS ECR**
-3. **Continuous Deployment** — Pulls the image on a **self-hosted EC2 runner** and starts the container
+1. **Continuous Integration** — Linting and unit tests
+2. **Continuous Delivery** — Builds the Docker image and pushes it to AWS ECR
+3. **Continuous Deployment** — Pulls the image on a self-hosted EC2 runner and starts the container
 
 ### Required GitHub Secrets
 
@@ -272,11 +245,9 @@ newgrp docker
 
 Then register the instance as a self-hosted GitHub Actions runner under **Settings → Actions → Runners** in your repository.
 
----
+## Dataset and Features
 
-## 📋 Dataset & Features
-
-The dataset contains **30 features** extracted from URLs to determine whether a website is a phishing site or legitimate. Each feature is encoded as an integer (`-1`, `0`, or `1`).
+The dataset contains 30 features extracted from URLs to determine whether a website is a phishing site or legitimate. Each feature is encoded as an integer (`-1`, `0`, or `1`).
 
 <details>
 <summary><strong>Click to expand full feature list</strong></summary>
@@ -317,34 +288,30 @@ The dataset contains **30 features** extracted from URLs to determine whether a 
 
 </details>
 
----
-
-## 🌱 Environment Variables
+## Environment Variables
 
 | Variable | Required | Description |
 |----------|:--------:|--------------|
-| `MONGODB_URL_KEY` | ✅ | MongoDB connection string |
-| `MLFLOW_TRACKING_URI` | ❌ | MLflow server URL (defaults to DagsHub) |
-| `MLFLOW_TRACKING_USERNAME` | ❌ | MLflow auth username |
-| `MLFLOW_TRACKING_PASSWORD` | ❌ | MLflow auth token |
+| `MONGODB_URL_KEY` | Yes | MongoDB connection string |
+| `MLFLOW_TRACKING_URI` | No | MLflow server URL (defaults to DagsHub) |
+| `MLFLOW_TRACKING_USERNAME` | No | MLflow auth username |
+| `MLFLOW_TRACKING_PASSWORD` | No | MLflow auth token |
 
----
+## Roadmap
 
-## 🗺️ Roadmap
+- Add automated integration tests for API endpoints
+- Add model performance monitoring / drift alerts in production
+- Support multi-environment deployments (staging / production)
+- Add authentication to the `/train` and `/predict` endpoints
 
-- [ ] Add automated integration tests for API endpoints
-- [ ] Add model performance monitoring / drift alerts in production
-- [ ] Support multi-environment deployments (staging / production)
-- [ ] Add authentication to the `/train` and `/predict` endpoints
-
----
-
-## 🤝 Contributing
+## Contributing
 
 Contributions, issues, and feature requests are welcome. Feel free to open a pull request or an issue if you'd like to improve this project.
 
----
-
-## 📄 License
-
-This project is for educational purposes.
+## License
+ 
+Licensed under the [Apache License 2.0](LICENSE).
+ 
+## Author
+ 
+Built by [Akki](https://github.com/akkiyolo).
