@@ -24,7 +24,17 @@ from sklearn.ensemble import (
 import mlflow
 import mlflow.sklearn
 import dagshub
-dagshub.init(repo_owner='akkiyolo', repo_name='networksecurity', mlflow=True)
+
+# NOTE: dagshub.init(...) used to run here, at module import time. That meant it
+# fired the instant `app.py` imported the training pipeline — before uvicorn even
+# started — and with no token configured it fell back to interactive browser OAuth,
+# printing "AUTHORIZATION REQUIRED" and hanging forever (which is why Render logged
+# "No open ports detected": the app never got far enough to bind a port).
+#
+# It's now called from `_init_dagshub()` below, which only runs when a ModelTrainer
+# is actually instantiated (i.e. when /train is hit), and skips cleanly if no token
+# is configured instead of hanging.
+
 
 class ModelTrainer:
 
@@ -33,9 +43,23 @@ class ModelTrainer:
         try:
             self.model_trainer_config = model_trainer_config
             self.data_transformation_artifact = data_transformation_artifact
+            self._init_dagshub()
         except Exception as e:
             raise NetworkSecurityException(e, sys)
-        
+
+    def _init_dagshub(self):
+        """Initialize DagsHub/MLflow tracking. Skipped safely if no token is configured
+        (e.g. local dev without a .env, or a fresh deploy missing the secret), instead
+        of hanging on interactive OAuth."""
+        token = os.getenv("DAGSHUB_USER_TOKEN")
+        if not token:
+            logging.warning("DAGSHUB_USER_TOKEN not set — skipping MLflow/DagsHub tracking init.")
+            return
+        try:
+            dagshub.init(repo_owner='akkiyolo', repo_name='networksecurity', mlflow=True)
+        except Exception as e:
+            logging.warning(f"DagsHub init failed, continuing without tracking: {e}")
+
     def track_model(self,best_model,classificationmetric):
         with mlflow.start_run():
             f1_score=classificationmetric.f1_score
