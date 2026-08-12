@@ -114,3 +114,14 @@ async def predict_route(request: Request, file: UploadFile = File(...)):
 
     except Exception as e:
         raise NetworkSecurityException(e, sys)
+
+
+if __name__ == "__main__":
+    # Render's Docker runtime assigns a dynamic port via $PORT — falls back to
+    # 8000 for local `python3 app.py` runs where $PORT isn't set.
+    port = int(os.environ.get("PORT", 8000))
+    app_run(
+        app, 
+        host="0.0.0.0", 
+        port=port
+    )
