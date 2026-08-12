@@ -51,16 +51,15 @@ app.add_middleware(
 )
 
 
-# Single source of truth for "/" — serves the frontend directly.
-# (Previously there were two competing @app.get("/") routes; FastAPI matched
-# whichever was registered first, so the redirect to /docs always won and the
-# frontend never loaded. Removed the redirect route entirely.)
 @app.get("/")
 async def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={"request": request}
+    )
 
 
-# Simple health check — used by Render and by the frontend's status dot.
 @app.get("/health")
 async def health():
     return {"status": "ok"}
@@ -80,29 +79,38 @@ async def train_route():
 async def predict_route(request: Request, file: UploadFile = File(...)):
     try:
         df = pd.read_csv(file.file)
+
         preprocesor = load_object("final_model/preprocessor.pkl")
         final_model = load_object("final_model/model.pkl")
-        network_model = NetworkModel(preprocessor=preprocesor, model=final_model)
+
+        network_model = NetworkModel(
+            preprocessor=preprocesor,
+            model=final_model
+        )
 
         y_pred = network_model.predict(df)
-        df['predicted_column'] = y_pred
+        df["predicted_column"] = y_pred
 
-        # Ensure the output directory exists — on a fresh clone (e.g. Render),
-        # this folder won't exist yet since it's generated output, not committed.
         os.makedirs("prediction_output", exist_ok=True)
-        df.to_csv('prediction_output/output.csv')
 
-        table_html = df.to_html(classes='table table-striped')
+        df.to_csv(
+            "prediction_output/output.csv",
+            index=False
+        )
+
+        table_html = df.to_html(
+            classes="table table-striped",
+            index=False
+        )
+
         return templates.TemplateResponse(
-            "table.html", {"request": request, "table": table_html}
+            request=request,
+            name="table.html",
+            context={
+                "request": request,
+                "table": table_html
+            }
         )
 
     except Exception as e:
         raise NetworkSecurityException(e, sys)
-
-
-if __name__ == "__main__":
-    # Render's Docker runtime assigns a dynamic port via $PORT — falls back to
-    # 8000 for local `python3 app.py` runs where $PORT isn't set.
-    port = int(os.environ.get("PORT", 8000))
-    app_run(app, host="0.0.0.0", port=port)
